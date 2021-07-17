@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/main.dart';
+import 'package:instagram_clone/code/screens/authorization/first_page.dart';
+import 'package:instagram_clone/code/screens/authorization/sign_up.dart';
+import 'package:instagram_clone/code/screens/authorization/log_in.dart';
+import 'package:instagram_clone/code/screens/app/pistagram.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -18,9 +21,9 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) => LogIn(),
         );
-      case '/home':
+      case '/pistagram':
         return MaterialPageRoute(
-          builder: (_) => Home(),
+          builder: (_) => Pistagram(),
         );
       default:
         // If there is no such named route in the switch statement, e.g. /third
