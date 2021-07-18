@@ -90,7 +90,7 @@ class Home extends StatelessWidget {
             postURL: 'https://picsum.photos/1500',
           ),
           InstaPost(
-            userName: 'Nard_Dawg',
+            userName: 'Stanley Hudson',
             profilePhotoURL: 'https://picsum.photos/1000',
             caption: "Did I stutter!?",
             postURL: 'https://picsum.photos/1600',
@@ -101,7 +101,7 @@ class Home extends StatelessWidget {
   }
 }
 
-class InstaPost extends StatelessWidget {
+class InstaPost extends StatefulWidget {
   final String userName;
   final String profilePhotoURL;
   final String postURL;
@@ -115,6 +115,31 @@ class InstaPost extends StatelessWidget {
     required this.caption,
   }) : super(key: key);
 
+  @override
+  _InstaPostState createState() => _InstaPostState(
+      userName: userName,
+      profilePhotoURL: profilePhotoURL,
+      postURL: postURL,
+      caption: caption);
+}
+
+class _InstaPostState extends State<InstaPost> {
+  Color _favIconColor = Colors.white;
+  IconData _favIcon = Icons.favorite_border;
+
+  final String userName;
+  final String profilePhotoURL;
+  final String postURL;
+  final String caption;
+
+  _InstaPostState({
+    // Key? key,
+    required this.userName,
+    required this.profilePhotoURL,
+    required this.postURL,
+    required this.caption,
+  });
+  // : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -149,10 +174,58 @@ class InstaPost extends StatelessWidget {
           Row(
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  setState(
+                    () {
+                      if (_favIconColor == Colors.white) {
+                        _favIconColor = Colors.red;
+                        _favIcon = Icons.favorite;
+                      } else {
+                        _favIconColor = Colors.white;
+                        _favIcon = Icons.favorite_border;
+                      }
+                    },
+                  );
+                  ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                  if (_favIconColor == Colors.red)
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.black,
+                        content: const Text(
+                          'You have liked the post',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        // action: SnackBarAction(
+                        //   label: 'Action',
+                        //   onPressed: () {
+                        //     // Code to execute.
+                        //   },
+                        // ),
+                      ),
+                    );
+                  else
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.black,
+                        content: const Text(
+                          'You have removed your like',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        // action: SnackBarAction(
+                        //   label: 'Action',
+                        //   onPressed: () {
+                        //     // Code to execute.
+                        //   },
+                        // ),
+                      ),
+                    );
+                },
                 icon: Icon(
-                  Icons.favorite_border,
+                  _favIcon,
                   size: 30.0,
+                  color: _favIconColor,
                 ),
               ),
               IconButton(
