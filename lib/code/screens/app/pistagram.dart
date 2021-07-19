@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/code/screens/app/home.dart';
+import 'package:instagram_clone/code/screens/app/search.dart';
+import 'package:provider/provider.dart';
+
+import '../../theme.dart';
 
 class Pistagram extends StatefulWidget {
   const Pistagram({Key? key}) : super(key: key);
@@ -11,11 +15,17 @@ class Pistagram extends StatefulWidget {
 class _PistagramState extends State<Pistagram> {
   int _currentIndex = 0;
 
+  final appBarTabs = [
+    AppBarHome(),
+    null,
+    null,
+    null,
+    null,
+  ];
+
   final tabs = [
     Home(),
-    Center(
-      child: Text('Bello2'),
-    ),
+    Search(),
     Center(
       child: Text('Bello3'),
     ),
@@ -29,76 +39,50 @@ class _PistagramState extends State<Pistagram> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        // shadowColor: Colors.grey[50],
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: Icon(Icons.camera_alt_outlined, color: Colors.grey[50]),
-          onPressed: () {},
-        ),
-        title: Container(
-          margin: EdgeInsets.symmetric(horizontal: 0.0, vertical: 50.0),
-          child: Center(
-            child: Text(
-              "Pistagram",
-              style: TextStyle(
-                fontSize: 40,
-                fontFamily: 'Billabong',
+    ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: SafeArea(
+        child: Scaffold(
+          appBar: appBarTabs[_currentIndex],
+          body: tabs[_currentIndex],
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: _currentIndex,
+            backgroundColor: _themeChanger.getTheme().primaryColor,
+            selectedItemColor: _themeChanger.getTheme().accentColor,
+            type: BottomNavigationBarType.fixed,
+            iconSize: 30.0,
+            selectedFontSize: 0.0,
+            unselectedFontSize: 0.0,
+            items: [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
               ),
-            ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.search),
+                label: 'Search',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.add_box_outlined),
+                label: 'Reels',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.favorite),
+                label: 'Activity',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'Person',
+              ),
+            ],
+            onTap: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
           ),
         ),
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.send_outlined,
-              color: Colors.grey[50],
-            ),
-            onPressed: () {
-              // do something
-            },
-          )
-        ],
-      ),
-      body: tabs[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        type: BottomNavigationBarType.fixed,
-        iconSize: 30.0,
-        backgroundColor: Colors.black,
-        selectedFontSize: 0.0,
-        unselectedFontSize: 0.0,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_box_outlined),
-            label: 'Reels',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Activity',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Person',
-          ),
-        ],
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
       ),
     );
   }
