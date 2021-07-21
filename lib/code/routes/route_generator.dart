@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/code/screens/app/dmsection.dart';
 import 'package:instagram_clone/code/screens/authorization/first_page.dart';
 import 'package:instagram_clone/code/screens/authorization/sign_up.dart';
 import 'package:instagram_clone/code/screens/authorization/log_in.dart';
@@ -24,6 +25,10 @@ class RouteGenerator {
       case '/pistagram':
         return MaterialPageRoute(
           builder: (_) => Pistagram(),
+        );
+      case '/dmsection':
+        return MaterialPageRoute(
+          builder: (_) => DMsection(),
         );
       default:
         // If there is no such named route in the switch statement, e.g. /third

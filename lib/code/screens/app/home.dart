@@ -26,7 +26,7 @@ class _AppBarHomeState extends State<AppBarHome> {
           Icons.camera_alt_outlined,
           color: _themeChanger.getTheme().accentColor,
         ),
-        onPressed: () => _themeChanger.setTheme(dark),
+        onPressed: () {},
       ),
       title: Container(
         margin: EdgeInsets.symmetric(horizontal: 0.0, vertical: 50.0),
@@ -48,9 +48,7 @@ class _AppBarHomeState extends State<AppBarHome> {
             Icons.send_outlined,
             color: _themeChanger.getTheme().accentColor,
           ),
-          onPressed: () {
-            _themeChanger.setTheme(light);
-          },
+          onPressed: () => Navigator.of(context).pushNamed('/dmsection'),
         )
       ],
     );
