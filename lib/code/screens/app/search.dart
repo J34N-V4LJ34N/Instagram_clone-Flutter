@@ -1,6 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import '../../theme.dart';
 
 class Search extends StatelessWidget {
@@ -8,15 +9,61 @@ class Search extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-        child: CustomSearchBar(),
-      ),
+    ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
+    return CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          // Provide a standard title.
+          automaticallyImplyLeading: false,
+          // centerTitle: true,
+          title: CustomSearchBar(),
+          floating: true,
+          snap: true,
+        ),
+        SliverStaggeredGrid.countBuilder(
+          crossAxisCount: 3,
+          itemCount: 21,
+          itemBuilder: (BuildContext context, int index) => Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: _themeChanger.getTheme().primaryColor),
+            ),
+            child: Center(
+              child: Image(
+                  fit: BoxFit.fill,
+                  image: NetworkImage('https://picsum.photos/' +
+                      ((index + 5) * 100).toString())),
+            ),
+          ),
+          staggeredTileBuilder: (index) => _renderTile(index),
+        ),
+      ],
     );
   }
 }
 
+StaggeredTile _renderTile(int n) {
+  StaggeredTile _tile = StaggeredTile.count(1, 1);
+
+  if (n % 18 == 1 || n % 18 == 9) {
+    _tile = StaggeredTile.count(2, 2);
+  }
+
+  return _tile;
+}
+// SliverGrid(
+//           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+//             maxCrossAxisExtent: 150.0,
+//             mainAxisSpacing: 10.0,
+//             crossAxisSpacing: 10.0,
+//             childAspectRatio: 1.0,
+//           ),
+//           delegate: SliverStaggeredGridDelegate()
+//         ),
+
+// Container(
+//         margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+//         child: CustomSearchBar(),
+//       ),
 class CustomSearchBar extends StatefulWidget {
   const CustomSearchBar({Key? key}) : super(key: key);
 
@@ -54,6 +101,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
     return TextField(
       focusNode: _focusNode,
       decoration: InputDecoration(
+        isDense: true,
         filled: true,
         fillColor: _cSearch,
         border: OutlineInputBorder(

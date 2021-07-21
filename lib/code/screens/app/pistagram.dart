@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/code/screens/app/home.dart';
+import 'package:instagram_clone/code/screens/app/profile.dart';
 import 'package:instagram_clone/code/screens/app/search.dart';
 import 'package:provider/provider.dart';
 
@@ -15,26 +16,20 @@ class Pistagram extends StatefulWidget {
 class _PistagramState extends State<Pistagram> {
   int _currentIndex = 0;
 
-  final appBarTabs = [
+  final appBarTabs = <PreferredSizeWidget?>[
     AppBarHome(),
     null,
     null,
     null,
-    null,
+    AppBarProfile(),
   ];
 
   final tabs = [
     Home(),
     Search(),
-    Center(
-      child: Text('Bello3'),
-    ),
-    Center(
-      child: Text('Bello4'),
-    ),
-    Center(
-      child: Text('Bello5'),
-    ),
+    null,
+    null,
+    Profile(),
   ];
 
   @override
@@ -64,7 +59,7 @@ class _PistagramState extends State<Pistagram> {
                 label: 'Search',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.add_box_outlined),
+                icon: Icon(Icons.tv),
                 label: 'Reels',
               ),
               BottomNavigationBarItem(

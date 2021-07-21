@@ -2,14 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../theme.dart';
-// class AppBarHome extends StatelessWidget {
-//   const AppBarHome({Key? key}) : super(key: key);
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Appbar();
-//   }
-// }
 class AppBarHome extends StatefulWidget implements PreferredSizeWidget {
   AppBarHome({Key? key})
       : preferredSize = Size.fromHeight(kToolbarHeight),
@@ -27,8 +20,6 @@ class _AppBarHomeState extends State<AppBarHome> {
   Widget build(BuildContext context) {
     ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
     return AppBar(
-      // backgroundColor: Colors.black,
-      // shadowColor: Colors.grey[50],
       automaticallyImplyLeading: false,
       leading: IconButton(
         icon: Icon(
@@ -111,7 +102,7 @@ class Home extends StatelessWidget {
               ),
               InstaStory(
                 imageURL: 'https://picsum.photos/900',
-                userName: 'Kevin_Malone',
+                userName: 'Angela_Martin',
               ),
               InstaStory(
                 imageURL: 'https://picsum.photos/1000',
