@@ -7,7 +7,11 @@ import 'package:provider/provider.dart';
 import '../../theme.dart';
 
 class Pistagram extends StatefulWidget {
-  const Pistagram({Key? key}) : super(key: key);
+  // final String uid;
+  const Pistagram({
+    Key? key,
+    // required this.uid,
+  }) : super(key: key);
 
   @override
   _PistagramState createState() => _PistagramState();
@@ -35,6 +39,7 @@ class _PistagramState extends State<Pistagram> {
   @override
   Widget build(BuildContext context) {
     ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
+
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: SafeArea(
@@ -59,7 +64,7 @@ class _PistagramState extends State<Pistagram> {
                 label: 'Search',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.tv),
+                icon: Icon(Icons.add_box_outlined),
                 label: 'Reels',
               ),
               BottomNavigationBarItem(
@@ -82,3 +87,27 @@ class _PistagramState extends State<Pistagram> {
     );
   }
 }
+// final user = Provider.of<UserData>(context);
+//     List<UserData> loadingUsersData = [
+//       UserData(
+//           uid: 'Loading...', email: 'Loading...', username: 'Loading...', fullname: 'Loading...', bio: 'Loading...')
+//     ];
+
+//     UserData loadingUserData = UserData(
+//         uid: 'Loading...', email: 'Loading...', username: 'Loading...', fullname: 'Loading...', bio: 'Loading...');
+
+    // return MultiProvider(
+    //   providers: [
+    //     StreamProvider<TheUser?>.value(
+    //   value: AuthService().user,
+    //   initialData: null,
+    //   ),
+    //     StreamProvider<List<UserData>?>.value(
+    //       initialData: loadingUsersData,
+    //       value: DatabaseService(uid: widget.uid).users,
+    //     ),
+    //     StreamProvider<UserData>.value(
+    //       initialData: loadingUserData,
+    //       value: DatabaseService(uid: widget.uid).user,
+    //     ),
+    //   ],

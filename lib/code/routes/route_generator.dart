@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/code/screens/app/dmsection.dart';
-import 'package:instagram_clone/code/screens/authorization/first_page.dart';
 import 'package:instagram_clone/code/screens/authorization/sign_up.dart';
 import 'package:instagram_clone/code/screens/authorization/log_in.dart';
-import 'package:instagram_clone/code/screens/app/pistagram.dart';
+import 'package:instagram_clone/code/wrapper.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -12,8 +11,12 @@ class RouteGenerator {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(
-          builder: (_) => FirstPage(),
+          builder: (_) => Wrapper(),
         );
+      // case '/firstpage':
+      //   return MaterialPageRoute(
+      //     builder: (_) => FirstPage(),
+      //   );
       case '/signup':
         return MaterialPageRoute(
           builder: (_) => SignUp(),
@@ -22,10 +25,10 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) => LogIn(),
         );
-      case '/pistagram':
-        return MaterialPageRoute(
-          builder: (_) => Pistagram(),
-        );
+      // case '/pistagram':
+      //   return MaterialPageRoute(
+      //     builder: (_) => Pistagram(),
+      //   );
       case '/dmsection':
         return MaterialPageRoute(
           builder: (_) => DMsection(),

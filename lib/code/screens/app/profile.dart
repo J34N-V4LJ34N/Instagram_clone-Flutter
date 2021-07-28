@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/code/models/userdata.dart';
+import 'package:instagram_clone/code/services/auth.dart';
+import 'package:instagram_clone/code/theme.dart';
 import 'package:provider/provider.dart';
-import '../../theme.dart';
 
 class AppBarProfile extends StatefulWidget implements PreferredSizeWidget {
   AppBarProfile({Key? key})
@@ -15,6 +17,8 @@ class AppBarProfile extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _AppBarProfileState extends State<AppBarProfile> {
+  final AuthService _auth = AuthService();
+
   @override
   Widget build(BuildContext context) {
     ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
@@ -24,7 +28,7 @@ class _AppBarProfileState extends State<AppBarProfile> {
       title: Container(
         margin: EdgeInsets.symmetric(horizontal: 0.0, vertical: 50.0),
         child: Text(
-          "Kevin_Malone",
+          Provider.of<UserData>(context).userName,
           style: TextStyle(
             color: _themeChanger.getTheme().accentColor,
           ),
@@ -36,18 +40,48 @@ class _AppBarProfileState extends State<AppBarProfile> {
             Icons.add_box_outlined,
             color: _themeChanger.getTheme().accentColor,
           ),
-          onPressed: () {
-            _themeChanger.setTheme(dark);
-          },
+          onPressed: () {},
         ),
-        IconButton(
+        // IconButton(
+        //   icon: Icon(
+        //     Icons.menu,
+        //     color: _themeChanger.getTheme().accentColor,
+        //   ),
+        //   onPressed: () {
+        //     showModalBottomSheet(context: context, builder: (context) {});
+        //   },
+        // ),
+        //TODO:  BottomSheet Menu
+        PopupMenuButton(
           icon: Icon(
             Icons.menu,
             color: _themeChanger.getTheme().accentColor,
           ),
-          onPressed: () {
-            _themeChanger.setTheme(light);
+          onSelected: (result) async {
+            if (result == 1) {
+              _themeChanger.setTheme(dark);
+            }
+            if (result == 2) {
+              _themeChanger.setTheme(light);
+            }
+            if (result == 3) {
+              await _auth.signOut();
+            }
           },
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              child: Text("Dark"),
+              value: 1,
+            ),
+            PopupMenuItem(
+              child: Text("Light"),
+              value: 2,
+            ),
+            PopupMenuItem(
+              child: Text("Log Out"),
+              value: 3,
+            )
+          ],
         ),
       ],
     );
@@ -100,8 +134,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 20.0),
+                      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                       child: ClipOval(
                         child: Image(
                           image: NetworkImage(
@@ -114,8 +147,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                     Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 20.0),
+                          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                           child: RichText(
                             text: new TextSpan(
                               // Note: Styles for TextSpans must be explicitly defined.
@@ -127,8 +159,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                 new TextSpan(
                                     text: '15',
                                     style: new TextStyle(
-                                      color:
-                                          _themeChanger.getTheme().accentColor,
+                                      color: _themeChanger.getTheme().accentColor,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20.0,
                                     )),
@@ -142,8 +173,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                     Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 20.0),
+                          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                           child: RichText(
                             text: new TextSpan(
                               // Note: Styles for TextSpans must be explicitly defined.
@@ -155,8 +185,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                 new TextSpan(
                                     text: '69',
                                     style: new TextStyle(
-                                      color:
-                                          _themeChanger.getTheme().accentColor,
+                                      color: _themeChanger.getTheme().accentColor,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20.0,
                                     )),
@@ -168,13 +197,11 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 20.0),
+                      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                       child: Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 20.0),
+                            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                             child: RichText(
                               text: new TextSpan(
                                 // Note: Styles for TextSpans must be explicitly defined.
@@ -186,9 +213,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                   new TextSpan(
                                       text: '420',
                                       style: new TextStyle(
-                                        color: _themeChanger
-                                            .getTheme()
-                                            .accentColor,
+                                        color: _themeChanger.getTheme().accentColor,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20.0,
                                       )),
@@ -216,8 +241,11 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                       ),
                       children: <TextSpan>[
                         new TextSpan(
-                            text: 'Kevin Malone',
-                            style: new TextStyle(fontWeight: FontWeight.bold)),
+                            text: Provider.of<UserData>(context).fullName,
+                            style: new TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: _themeChanger.getTheme().accentColor,
+                            )),
                       ],
                     ),
                   ),
@@ -227,8 +255,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                     vertical: 0,
                     horizontal: 20.0,
                   ),
-                  child: Text(
-                      "My name is Kevin \nthat is my name \nthey call me Kevin \nCuz that's my name"),
+                  child: Text(Provider.of<UserData>(context).bio),
                 ),
                 Row(
                   children: [
@@ -239,12 +266,10 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                           onPressed: () {},
                           child: Text(
                             'Edit Profile',
-                            style: TextStyle(
-                                color: _themeChanger.getTheme().accentColor),
+                            style: TextStyle(color: _themeChanger.getTheme().accentColor),
                           ),
                           style: ButtonStyle(
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.zero,
                                 side: BorderSide(
@@ -253,8 +278,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                               ),
                             ),
                             elevation: MaterialStateProperty.all<double>(0.0),
-                            backgroundColor: MaterialStateProperty.all(
-                                _themeChanger.getTheme().primaryColor),
+                            backgroundColor: MaterialStateProperty.all(_themeChanger.getTheme().primaryColor),
                           ),
                         ),
                       ),
@@ -268,8 +292,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                           color: _themeChanger.getTheme().accentColor,
                         ),
                         style: ButtonStyle(
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.zero,
                               side: BorderSide(
@@ -278,8 +301,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                             ),
                           ),
                           elevation: MaterialStateProperty.all<double>(0.0),
-                          backgroundColor: MaterialStateProperty.all(
-                              _themeChanger.getTheme().primaryColor),
+                          backgroundColor: MaterialStateProperty.all(_themeChanger.getTheme().primaryColor),
                         ),
                       ),
                     ),
@@ -298,15 +320,13 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                 Tab(
                   child: Text(
                     'Icons.posts',
-                    style:
-                        TextStyle(color: _themeChanger.getTheme().accentColor),
+                    style: TextStyle(color: _themeChanger.getTheme().accentColor),
                   ),
                 ),
                 Tab(
                   child: Text(
                     'Icons.tagged',
-                    style:
-                        TextStyle(color: _themeChanger.getTheme().accentColor),
+                    style: TextStyle(color: _themeChanger.getTheme().accentColor),
                   ),
                 ),
               ],
@@ -363,7 +383,7 @@ class PageTwo extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 200,
+        maxCrossAxisExtent: 150,
         childAspectRatio: 1,
         crossAxisSpacing: 3,
         mainAxisSpacing: 3,
@@ -371,9 +391,7 @@ class PageTwo extends StatelessWidget {
       itemBuilder: (context, index) => Container(
         child: Center(
           child: Image(
-              fit: BoxFit.fill,
-              image: NetworkImage('https://picsum.photos/' +
-                  (((index % 3) + 3) * 100).toString())),
+              fit: BoxFit.fill, image: NetworkImage('https://picsum.photos/' + (((index % 3) + 3) * 100).toString())),
         ),
       ),
     );
