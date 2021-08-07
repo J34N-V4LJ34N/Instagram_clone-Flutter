@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/code/models/theuser.dart';
-import 'package:instagram_clone/code/routes/route_generator.dart';
+import 'package:instagram_clone/code/services/route_generator.dart';
 import 'package:instagram_clone/code/services/auth.dart';
 import 'package:instagram_clone/code/theme.dart';
 import 'package:provider/provider.dart';
@@ -66,7 +66,7 @@ class MaterialAppWithTheme extends StatelessWidget {
     final theme = Provider.of<ThemeChanger>(context);
     return StreamProvider<TheUser?>.value(
       value: AuthService().user,
-      initialData: null,
+      initialData: TheUser(uid: 'Loading...'),
       child: MaterialApp(
         theme: theme.getTheme(),
         initialRoute: '/',

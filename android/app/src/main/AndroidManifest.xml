@@ -38,9 +38,12 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
-    <!-- <queries>
+    <!-- Permissions options for the `location` group -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <queries>
           <intent>
               <action android:name="android.media.action.IMAGE_CAPTURE" />
           </intent>
-    </queries> -->
+    </queries>
 </manifest>

@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:instagram_clone/code/screens/app/home.dart';
 import 'package:instagram_clone/code/screens/app/profile.dart';
 import 'package:instagram_clone/code/screens/app/search.dart';
+import 'package:instagram_clone/code/theme.dart';
 import 'package:provider/provider.dart';
-
-import '../../theme.dart';
 
 class Pistagram extends StatefulWidget {
   // final String uid;

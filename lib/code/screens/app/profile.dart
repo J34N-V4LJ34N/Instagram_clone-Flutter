@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/code/models/post.dart';
 import 'package:instagram_clone/code/models/userdata.dart';
 import 'package:instagram_clone/code/services/auth.dart';
+import 'package:instagram_clone/code/shared/loading.dart';
 import 'package:instagram_clone/code/theme.dart';
 import 'package:provider/provider.dart';
 
@@ -40,7 +42,9 @@ class _AppBarProfileState extends State<AppBarProfile> {
             Icons.add_box_outlined,
             color: _themeChanger.getTheme().accentColor,
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushNamed('/addpost', arguments: Provider.of<UserData>(context, listen: false));
+          },
         ),
         // IconButton(
         //   icon: Icon(
@@ -80,7 +84,7 @@ class _AppBarProfileState extends State<AppBarProfile> {
             PopupMenuItem(
               child: Text("Log Out"),
               value: 3,
-            )
+            ),
           ],
         ),
       ],
@@ -136,13 +140,21 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                       child: ClipOval(
-                        child: Image(
-                          image: NetworkImage(
-                              'https://openpsychometrics.org/tests/characters/test-resources/pics/TO/9.jpg'),
-                          width: 100.0,
-                          height: 100.0,
-                        ),
-                      ),
+                          child: (Provider.of<UserData>(context).profilePicURL == 'Loading...')
+                              ? LoadingCircle()
+                              : (Provider.of<UserData>(context).profilePicURL == 'null')
+                                  ? Placeholder(
+                                      color: _themeChanger.getTheme().accentColor,
+                                      fallbackHeight: 100.0,
+                                      fallbackWidth: 100.0,
+                                      strokeWidth: 0.0,
+                                    )
+                                  : Image(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(Provider.of<UserData>(context).profilePicURL!),
+                                      width: 100.0,
+                                      height: 100.0,
+                                    )),
                     ),
                     Column(
                       children: [
@@ -157,7 +169,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                               ),
                               children: <TextSpan>[
                                 new TextSpan(
-                                    text: '15',
+                                    text: '${Provider.of<UserData>(context).numberOfPosts}',
                                     style: new TextStyle(
                                       color: _themeChanger.getTheme().accentColor,
                                       fontWeight: FontWeight.bold,
@@ -183,7 +195,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                               ),
                               children: <TextSpan>[
                                 new TextSpan(
-                                    text: '69',
+                                    text: Provider.of<UserData>(context).numberOfFollowers.toString(),
                                     style: new TextStyle(
                                       color: _themeChanger.getTheme().accentColor,
                                       fontWeight: FontWeight.bold,
@@ -211,7 +223,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                 ),
                                 children: <TextSpan>[
                                   new TextSpan(
-                                      text: '420',
+                                      text: Provider.of<UserData>(context).numberOfFollowing.toString(),
                                       style: new TextStyle(
                                         color: _themeChanger.getTheme().accentColor,
                                         fontWeight: FontWeight.bold,
@@ -263,7 +275,10 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                       child: Container(
                         margin: EdgeInsets.fromLTRB(20.0, 10.0, 3.0, 0.0),
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed('/editprofile', arguments: Provider.of<UserData>(context, listen: false));
+                          },
                           child: Text(
                             'Edit Profile',
                             style: TextStyle(color: _themeChanger.getTheme().accentColor),
@@ -319,13 +334,13 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
               tabs: [
                 Tab(
                   child: Text(
-                    'Icons.posts',
+                    'Posts',
                     style: TextStyle(color: _themeChanger.getTheme().accentColor),
                   ),
                 ),
                 Tab(
                   child: Text(
-                    'Icons.tagged',
+                    'Tagged-(COMING SOON)',
                     style: TextStyle(color: _themeChanger.getTheme().accentColor),
                   ),
                 ),
@@ -346,6 +361,26 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 }
 
 class PageOne extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 150,
+        childAspectRatio: 1,
+        crossAxisSpacing: 3,
+        mainAxisSpacing: 3,
+      ),
+      itemCount: Provider.of<List<Post>>(context).length,
+      itemBuilder: (context, index) => Container(
+        child: Provider.of<List<Post>>(context)[index].postURL == 'Loading...'
+            ? LoadingCircle()
+            : Image(fit: BoxFit.cover, image: NetworkImage(Provider.of<List<Post>>(context)[index].postURL)),
+      ),
+    );
+  }
+}
+
+class PageTwo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.count(
@@ -374,26 +409,6 @@ class PageOne extends StatelessWidget {
         Image(image: NetworkImage('https://picsum.photos/400')),
         Image(image: NetworkImage('https://picsum.photos/200')),
       ],
-    );
-  }
-}
-
-class PageTwo extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 150,
-        childAspectRatio: 1,
-        crossAxisSpacing: 3,
-        mainAxisSpacing: 3,
-      ),
-      itemBuilder: (context, index) => Container(
-        child: Center(
-          child: Image(
-              fit: BoxFit.fill, image: NetworkImage('https://picsum.photos/' + (((index % 3) + 3) * 100).toString())),
-        ),
-      ),
     );
   }
 }

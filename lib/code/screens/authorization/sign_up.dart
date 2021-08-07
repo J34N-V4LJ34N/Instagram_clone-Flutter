@@ -153,8 +153,8 @@ class _SignUpState extends State<SignUp> {
                                       _error = 'Please supply a valid email';
                                     });
                                   } else {
-                                    await DatabaseService(uid: result!.uid)
-                                        .updateUserData(_email, _username, _fullname, 'Hello, I am $_fullname');
+                                    await DatabaseService(uid: result!.uid).addUserData(_email, _username, _fullname,
+                                        'Hello, I am $_fullname', null, 0, 0, ['Jean'], 0, ['Jean']);
                                     Navigator.of(context).pushReplacementNamed(
                                       '/',
                                     );
